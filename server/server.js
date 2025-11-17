@@ -1,10 +1,24 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const mediaRoutes = require("./routes/mediaRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Server is working");
+});
+
+app.use("/api/media", mediaRoutes);
+app.use("/api/users", userRoutes);
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Server error" });
 });
 
 mongoose
