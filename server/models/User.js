@@ -6,7 +6,7 @@ const ratingSchema = new mongoose.Schema(
     rating: { type: Number, min: 1, max: 10, required: true },
     review: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const userSchema = new mongoose.Schema(
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     favorites: [{ type: Number }], // array of TMDB ids
     ratings: [ratingSchema],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("User", userSchema);
