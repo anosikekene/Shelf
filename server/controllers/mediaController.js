@@ -1,22 +1,69 @@
 const tmdb = require("../utils/tmdbClient");
 
-exports.search = async (req, res, next) => {
+const Media = require("../models/Media");
+
+exports.createMedia = async (req, res) => {
   try {
-    const q = req.query.q;
-    if (!q) return res.status(400).json({ error: "Query missing" });
-    const results = await tmdb.search(q);
-    res.json(results);
-  } catch (err) {
-    next(err);
+    const { title, type, genre, releaseDate } = req.body;
+
+    if (!title || !type) {
+      return res.status(400).json({ error: "Title and type are required" });
+    }
+
+    const newMedia = new Media({
+      title,
+      type,
+      genre,
+      releaseDate,
+      createdBy: req.userId,
+    });
+
+    await newMedia.save();
+    console.log(req.userId);
+    res.status(201).json(newMedia);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
-exports.getDetails = async (req, res, next) => {
+exports.getAllMedia = async (req, res) => {
   try {
-    const { type, id } = req.params;
-    const data = await tmdb.getDetails(type, id);
-    res.json(data);
-  } catch (err) {
-    next(err);
+    const media = await Media.find();
+    res.json(media);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.getMediaById = async (req, res) => {
+  try {
+    const media = await Media.findById(req.params.id);
+    if (!media) {
+      return res.status(404).json({ error: "Media not found" });
+    }
+    res.json(media);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.updateMedia = async (req, res) => {
+  try {
+    const updated = await Media.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.deleteMedia = async (req, res) => {
+  try {
+    await Media.findByIdAndDelete(req.params.id);
+    res.json({ message: "Media deleted" });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
   }
 };
