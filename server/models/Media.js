@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const mediaSchema = new mongoose.Schema({
+  mediaId: String,
   title: { type: String, required: true },
   type: { type: String, required: true },
   genre: String,
@@ -17,6 +18,7 @@ const mediaSchema = new mongoose.Schema({
       rating: { type: Number, min: 1, max: 5 },
       comment: String,
     },
+    Number,
   ],
   averageRating: { type: Number, default: 0 },
 });

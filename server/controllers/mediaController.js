@@ -4,11 +4,12 @@ const Media = require("../models/Media");
 
 exports.createMedia = async (req, res) => {
   try {
-    const { title, type, genre, releaseDate, poster, review, rating } =
-      req.body;
+    const { title, type, genre, releaseDate, rating, comment } = req.body;
 
-    if (!title || !type) {
-      return res.status(400).json({ error: "Title and type are required" });
+    if (!title || !type || !rating || !comment) {
+      return res
+        .status(400)
+        .json({ error: "Title, type, rating, and comment are required" });
     }
 
     const newMedia = new Media({
@@ -16,25 +17,31 @@ exports.createMedia = async (req, res) => {
       type,
       genre,
       releaseDate,
-      poster,
-      createdBy: req.userId,
+      reviews: [],
+      averageRating: rating,
     });
 
-    if (review && rating) {
-      newMedia.reviews.push({
-        user: req.userId,
-        rating,
-        comment: review,
-      });
-      newMedia.averageRating = rating;
-    }
-
     await newMedia.save();
+
+    newMedia.reviews.push({
+      user: req.userId,
+      rating,
+      comment,
+    });
+    await newMedia.save();
+
+    const user = await User.findById(req.userId);
+    user.reviews.push({
+      media: newMedia._id,
+      rating,
+      comment,
+    });
+    await user.save();
 
     res.status(201).json(newMedia);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server error1" });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -59,14 +66,42 @@ exports.getMediaById = async (req, res) => {
   }
 };
 
-exports.updateMedia = async (req, res) => {
+exports.updateReview = async (req, res) => {
   try {
-    const updated = await Media.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    res.json(updated);
+    const { rating, comment } = req.body;
+
+    const media = await Media.findById(req.params.id);
+    if (!media) return res.status(404).json({ error: "Media not found" });
+
+    const mediaReview = media.reviews.find(
+      (rev) => rev.user.toString() === req.userId,
+    );
+    if (!mediaReview)
+      return res.status(400).json({ error: "Review not found" });
+
+    mediaReview.rating = rating;
+    mediaReview.comment = comment;
+    media.averageRating =
+      media.reviews.reduce((sum, rev) => sum + rev.rating, 0) /
+      media.reviews.length;
+    await media.save();
+
+    const user = await User.findById(req.userId);
+    const userReview = user.reviews.find(
+      (rev) => rev.media.toString() === media._id.toString(),
+    );
+    if (userReview) {
+      userReview.rating = rating;
+      userReview.comment = comment;
+    }
+    await user.save();
+
+    res.status(200).json({ media, userReview });
   } catch (error) {
-    res.status(500).json({ error: "Server error4" });
+    console.error(error);
+    if (error.kind === "ObjectId")
+      return res.status(400).json({ error: "Invalid media ID" });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -103,5 +138,29 @@ exports.searchMedia = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to fetch media" });
+  }
+};
+
+exports.getAllMedia = async (req, res) => {
+  try {
+    const media = await Media.find();
+    res.json(media);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.getMediaById = async (req, res) => {
+  try {
+    const media = await Media.findById(req.params.id).populate(
+      "reviews.user",
+      "username",
+    );
+    if (!media) return res.status(404).json({ error: "Media not found" });
+    res.json(media);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
   }
 };
