@@ -93,6 +93,7 @@ exports.searchMedia = async (req, res) => {
       type: item.media_type,
       releaseDate: item.release_date || item.first_air_date,
       overview: item.overview,
+      averageRating: item.vote_average,
       poster: item.poster_path
         ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
         : null,
