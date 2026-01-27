@@ -1,19 +1,26 @@
 const axios = require("axios");
-const baseURL = "https://api.themoviedb.org/3";
-const apiKey = process.env.TMDB_API_KEY;
 
-async function search(query) {
-  const url = `${baseURL}/search/multi?api_key=${apiKey}&query=${encodeURIComponent(
-    query
-  )}`;
-  const res = await axios.get(url);
-  return res.data;
-}
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const BASE_URL = "https://api.themoviedb.org/3";
 
-async function getDetails(type, id) {
-  const url = `${baseURL}/${type}/${id}?api_key=${apiKey}&append_to_response=credits,images`;
-  const res = await axios.get(url);
-  return res.data;
-}
+exports.search = async (query) => {
+  const response = await axios.get(`${BASE_URL}/search/multi`, {
+    params: {
+      api_key: TMDB_API_KEY,
+      query,
+      include_adult: false,
+    },
+  });
 
-module.exports = { search, getDetails };
+  return response.data.results;
+};
+
+exports.getDetails = async (type, id) => {
+  const response = await axios.get(`${BASE_URL}/${type}/${id}`, {
+    params: {
+      api_key: TMDB_API_KEY,
+    },
+  });
+
+  return response.data;
+};

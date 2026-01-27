@@ -8,9 +8,13 @@ router.get("/test", (req, res) => {
 });
 
 router.post("/", auth, mediaController.createMedia);
+
 router.get("/", mediaController.getAllMedia);
+router.get("/search", auth, mediaController.searchMedia);
 router.get("/:id", mediaController.getMediaById);
+
 router.put("/:id", auth, mediaController.updateMedia);
+
 router.delete("/:id", auth, mediaController.deleteMedia);
 
 module.exports = router;
