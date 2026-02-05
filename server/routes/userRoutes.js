@@ -11,22 +11,18 @@ router.get("/protected", auth, (req, res) => {
   });
 });
 router.get("/profile", auth, userController.profile);
-router.get("/:id/reviews", userController.getUserReviews);
+router.get("/:username/reviews", userController.getUserReviews);
 
 router.post("/signup", userController.createUser);
 router.post("/login", userController.login);
 router.post("/:id/favorite", auth, userController.addFavorite);
-router.post("/:id/rate", auth, userController.addRating);
-router.post("/:id/review", auth, userController.createReview);
+router.post("/:username/review", auth, userController.createReview);
 
-router.get("/:id/reviews", userController.getUserReviews);
-
-// Add a review for a media item
-router.post("/:id/review", auth, userController.createReview);
+// router.get("/:id/reviews", userController.getUserReviews);
 
 // Update a review for a media item
-router.put("/:id/review/:mediaId", auth, userController.updateReview);
+router.put("/:username/review/:mediaId", auth, userController.updateReview);
 
 // Delete a review for a media item
-router.delete("/:id/review/:mediaId", auth, userController.deleteReview);
+router.delete("/:username/review/:mediaId", auth, userController.deleteReview);
 module.exports = router;
