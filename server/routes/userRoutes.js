@@ -18,11 +18,9 @@ router.post("/login", userController.login);
 router.post("/:id/favorite", auth, userController.addFavorite);
 router.post("/:username/review", auth, userController.createReview);
 
-// router.get("/:id/reviews", userController.getUserReviews);
-
-// Update a review for a media item
+// Update a review
 router.put("/:username/review/:mediaId", auth, userController.updateReview);
 
-// Delete a review for a media item
+// Delete a review
 router.delete("/:username/review/:mediaId", auth, userController.deleteReview);
 module.exports = router;

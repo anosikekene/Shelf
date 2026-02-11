@@ -7,6 +7,7 @@ exports.test = (req, res) => {
   res.send("User controller is working");
 };
 
+//http://localhost:3000/api/users/signup
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -15,9 +16,14 @@ exports.createUser = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingEmail = await User.findOne({ email });
+    const existingUser = await User.findOne({ username });
+
     if (existingUser) {
       return res.status(400).json({ error: "User already exists" });
+    }
+    if (existingEmail) {
+      return res.status(400).json({ error: "Email already taken" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -26,7 +32,7 @@ exports.createUser = async (req, res) => {
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
 
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
@@ -41,6 +47,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
+//http://localhost:3000/api/users/login
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -56,7 +63,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
@@ -112,7 +119,7 @@ exports.getUserReviews = async (req, res) => {
 exports.createReview = async (req, res) => {
   try {
     const { id, rating, comment, title, type } = req.body;
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
     if (!id || rating == null || !type) {
@@ -126,7 +133,6 @@ exports.createReview = async (req, res) => {
       rating,
       comment,
     });
-
     await review.save();
 
     res.status(201).json({
@@ -141,6 +147,11 @@ exports.createReview = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json({ error: "You have already reviewed this media" });
+    }
     res.status(500).json({ error: error.errorResponse.errmsg });
   }
 };

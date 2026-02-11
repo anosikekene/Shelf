@@ -9,7 +9,6 @@ const reviewSchema = new mongoose.Schema({
   id: {
     type: Number,
     required: true,
-    unique: true,
   },
   title: { type: String, required: true },
   type: { type: String, required: true },
@@ -18,4 +17,5 @@ const reviewSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+reviewSchema.index({ user: 1, id: 1 }, { unique: true });
 module.exports = mongoose.model("Review", reviewSchema);
