@@ -125,7 +125,18 @@ exports.createReview = async (req, res) => {
     if (!id || rating == null || !type) {
       return res.status(400).json({ error: "Missing required fields" });
     }
-    const review = new Review({
+
+    let review = await Review.findOne({ user: req.user._id, id });
+    if (review) {
+      review.rating = rating;
+      review.comment = comment;
+      await review.save();
+
+      return res
+        .status(200)
+        .json({ message: "Review updated successfully", review });
+    }
+    review = new Review({
       user: user._id,
       id,
       title,
@@ -136,9 +147,9 @@ exports.createReview = async (req, res) => {
     await review.save();
 
     res.status(201).json({
-      message: "Review added",
+      message: "Review added successfully",
       review: {
-        username: user.username, // include username for the response
+        username: user.username,
         id,
         title,
         rating,
@@ -161,23 +172,23 @@ exports.addFavorite = async (req, res) => {
 };
 
 //http://localhost:3000/api/users/keneanosike/review/80020
-exports.updateReview = async (req, res) => {
-  try {
-    const { mediaId } = req.params;
-    const { rating, comment } = req.body;
-    const review = await Review.findOne({ user: req.userId, id: mediaId });
-    if (!review) return res.status(404).json({ error: "Review not found" });
+// exports.updateReview = async (req, res) => {
+//   try {
+//     const { mediaId } = req.params;
+//     const { rating, comment } = req.body;
+//     const review = await Review.findOne({ user: req.userId, id: mediaId });
+//     if (!review) return res.status(404).json({ error: "Review not found" });
 
-    review.rating = rating ?? review.rating;
-    review.comment = comment ?? review.comment;
-    await review.save();
+//     review.rating = rating ?? review.rating;
+//     review.comment = comment ?? review.comment;
+//     await review.save();
 
-    res.json({ message: "Review updated", review });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
-};
+//     res.json({ message: "Review updated", review });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// };
 
 //http://localhost:3000/api/users/keneanosike/review/80020
 exports.deleteReview = async (req, res) => {
