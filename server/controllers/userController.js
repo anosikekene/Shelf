@@ -3,10 +3,6 @@ const Review = require("../models/Review");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-exports.test = (req, res) => {
-  res.send("User controller is working");
-};
-
 //http://localhost:3000/api/users/signup
 exports.createUser = async (req, res) => {
   try {
@@ -72,10 +68,6 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-
-// exports.addRating = async (req, res) => {
-//   res.json({ message: "Rating added (placeholder)" });
-// };
 
 exports.profile = async (req, res) => {
   try {
@@ -170,25 +162,6 @@ exports.createReview = async (req, res) => {
 exports.addFavorite = async (req, res) => {
   res.json({ message: "Favorite added (placeholder)" });
 };
-
-//http://localhost:3000/api/users/keneanosike/review/80020
-// exports.updateReview = async (req, res) => {
-//   try {
-//     const { mediaId } = req.params;
-//     const { rating, comment } = req.body;
-//     const review = await Review.findOne({ user: req.userId, id: mediaId });
-//     if (!review) return res.status(404).json({ error: "Review not found" });
-
-//     review.rating = rating ?? review.rating;
-//     review.comment = comment ?? review.comment;
-//     await review.save();
-
-//     res.json({ message: "Review updated", review });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// };
 
 //http://localhost:3000/api/users/keneanosike/review/80020
 exports.deleteReview = async (req, res) => {

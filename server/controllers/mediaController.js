@@ -51,17 +51,3 @@ exports.getMediaReviews = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-
-// exports.getMediaById = async (req, res) => {
-//   try {
-//     const media = await Media.findById(req.params.id).populate(
-//       "reviews.user",
-//       "username",
-//     );
-//     if (!media) return res.status(404).json({ error: "Media not found" });
-//     res.json(media);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// };
