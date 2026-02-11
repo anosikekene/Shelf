@@ -19,7 +19,7 @@ router.post("/:id/favorite", auth, userController.addFavorite);
 router.post("/:username/review", auth, userController.createReview);
 
 // Update a review
-router.put("/:username/review/:mediaId", auth, userController.updateReview);
+//router.put("/:username/review/:mediaId", auth, userController.updateReview);
 
 // Delete a review
 router.delete("/:username/review/:mediaId", auth, userController.deleteReview);
