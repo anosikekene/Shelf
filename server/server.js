@@ -13,8 +13,8 @@ app.get("/", (req, res) => {
   res.send("Server is working");
 });
 
-app.use("/api/media", mediaRoutes);
-app.use("/api/users", userRoutes);
+app.use("/media", mediaRoutes);
+app.use("", userRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
