@@ -20,11 +20,10 @@ function LoginPage() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         setMessage("Login successful!");
         localStorage.setItem("token", data.token);
-        navigate("/dashboard");
+        navigate(`/${data.user.username}`);
       } else {
         setMessage(data.message || "Login failed");
       }

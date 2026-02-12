@@ -63,7 +63,9 @@ exports.login = async (req, res) => {
       expiresIn: "7d",
     });
 
-    res.status(200).json({ message: "Login successful", token, user });
+    res
+      .status(200)
+      .json({ message: "Login successful", token, username: user });
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }
@@ -92,10 +94,11 @@ exports.getUserReviews = async (req, res) => {
     const { username } = req.params;
 
     const user = await User.findOne({ username });
-    console.log(user._id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const reviews = await Review.find({ user: user._id });
+    const reviews = await Review.find({ user: user._id }).sort({
+      createdAt: -1,
+    });
 
     res.json({
       username: user.username,
