@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString("en-US", {
@@ -35,21 +35,23 @@ function Dashboard() {
 
   return (
     <div>
-      <h1>Dashboard</h1>
-      <h2>{username}</h2>
-      {reviews.length == 0 ? (
-        <p>No reviews yet</p>
-      ) : (
-        reviews.map((review) => (
-          <div key={review._id}>
-            <h3>{review?.title}</h3>
-            <p>{review.comment}</p>
-            <p>Type: {review.type}</p>
-            <p>Rating: {review.rating}</p>
-            <p>Shelfed: {formatDate(review.createdAt)}</p>
-          </div>
-        ))
-      )}
+      <div>
+        <h1>Dashboard</h1>
+        <h2>{username}</h2>
+        {reviews.length === 0 ? (
+          <p>No reviews yet</p>
+        ) : (
+          reviews.map((review) => (
+            <div key={review._id}>
+              <h3>{review?.title}</h3>
+              <p>{review.comment}</p>
+              <p>Type: {review.type}</p>
+              <p>Rating: {review.rating}</p>
+              <p>Shelfed: {formatDate(review.createdAt)}</p>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
