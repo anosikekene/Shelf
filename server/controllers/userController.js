@@ -3,7 +3,7 @@ const Review = require("../models/Review");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-//http://localhost:3000/api/users/signup
+//http://localhost:3000/api/users/register
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;

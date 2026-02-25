@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(""); // creates state, establishes value and setter
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // prevents page from unnecessarily reloading
 
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -21,9 +21,9 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage("Login successful!");
+        setMessage("Login Successful");
         localStorage.setItem("token", data.token);
-        navigate(`/${data.user.username}`);
+        navigate(`/${data.username.username}`);
       } else {
         setMessage(data.message || "Login failed");
       }

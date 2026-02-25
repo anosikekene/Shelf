@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/login";
 import Dashboard from "./pages/dashboard";
+import Register from "./pages/register";
 import ProtectedRoute from "./components/protectedRoute";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
