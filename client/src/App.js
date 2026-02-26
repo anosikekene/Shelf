@@ -6,26 +6,28 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./Layout";
-//import { navBar } from "../components/navBar";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/:username"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/register" element={<Register />} />
-        </Route>
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/:username"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/register" element={<Register />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

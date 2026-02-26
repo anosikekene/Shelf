@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function LoginPage() {
   const [email, setEmail] = useState(""); // creates state, establishes value and setter
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevents page from unnecessarily reloading
@@ -21,8 +24,7 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage("Login Successful");
-        localStorage.setItem("token", data.token);
+        login(data.username.username, data.token);
         navigate(`/${data.username.username}`);
       } else {
         setMessage(data.message || "Login failed");
