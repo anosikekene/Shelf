@@ -36,7 +36,6 @@ function Dashboard() {
         <div>
           <h4>Recents</h4>
         </div>
-        s
         <ReviewDisplay reviews={reviews} />
       </div>
     </div>
