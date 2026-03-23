@@ -13,7 +13,6 @@ function Dashboard() {
   const { username } = useParams();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const loggedInUser = localStorage.getItem("user");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,7 +38,6 @@ function Dashboard() {
       <div>
         <div>
           <h1>Dashboard</h1>
-          {username === loggedInUser ? <button>Add</button> : null}
         </div>
 
         <h2>{username}</h2>
@@ -53,6 +51,7 @@ function Dashboard() {
               <p>Type: {review.type}</p>
               <p>Rating: {review.rating}</p>
               <p>Shelfed: {formatDate(review.createdAt)}</p>
+              <img src={review.poster} />
             </div>
           ))
         )}

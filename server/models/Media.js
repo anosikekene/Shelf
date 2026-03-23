@@ -7,7 +7,7 @@ const mediaSchema = new mongoose.Schema({
   genre: String,
   releaseDate: Date,
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-
+  poster: { type: String },
   reviews: [
     {
       user: {

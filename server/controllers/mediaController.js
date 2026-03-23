@@ -1,6 +1,6 @@
 const tmdb = require("../utils/tmdbClient");
 
-const Media = require("../models/Media");
+//const Media = require("../models/Media");
 const Review = require("../models/Review");
 
 exports.getAllMedia = async (req, res) => {
@@ -12,6 +12,7 @@ exports.getAllMedia = async (req, res) => {
   }
 };
 
+//http://localhost:3000/media/search?title=
 exports.searchMedia = async (req, res) => {
   const { title } = req.query;
   console.log(title);

@@ -24,8 +24,8 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        login(data.username.username, data.token);
-        navigate(`/${data.username.username}`);
+        login(data.username, data.token);
+        navigate(`/${data.username}`);
       } else {
         setMessage(data.message || "Login failed");
       }

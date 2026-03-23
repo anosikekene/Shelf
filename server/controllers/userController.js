@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Login successful", token, username: user });
+      .json({ message: "Login successful", token, username: user.username });
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }
@@ -113,7 +113,7 @@ exports.getUserReviews = async (req, res) => {
 //http://localhost:3000/api/users/keneanosike/review
 exports.createReview = async (req, res) => {
   try {
-    const { id, rating, comment, title, type } = req.body;
+    const { id, rating, comment, title, type, poster } = req.body;
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
@@ -138,6 +138,7 @@ exports.createReview = async (req, res) => {
       type,
       rating,
       comment,
+      poster,
     });
     await review.save();
 
@@ -149,6 +150,7 @@ exports.createReview = async (req, res) => {
         title,
         rating,
         comment,
+        poster,
       },
     });
   } catch (error) {
