@@ -1,0 +1,15 @@
+.review-display {
+  display: flex;
+  justify-content: flex-start;
+  border: 1px solid #ccc;
+}
+
+.poster img {
+  height: 120px;
+  width: auto;
+  padding: 20px;
+}
+
+.review-info {
+  border: 1px solid #ccc;
+}
