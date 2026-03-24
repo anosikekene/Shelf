@@ -8,7 +8,7 @@ const formatDate = (date) => {
   });
 };
 function ReviewDisplay({ reviews }) {
-  return reviews.length === 0 || !reviews ? (
+  return !reviews || reviews.length === 0 ? (
     <p>No reviews yet</p>
   ) : (
     reviews.map((review) => (

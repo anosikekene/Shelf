@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -8,12 +8,13 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
-
+  const { login, user } = useContext(AuthContext);
+  if (user) return <Navigate to={`/${user}`} />;
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevents page from unnecessarily reloading
 
     try {
+      console.log("cheese");
       const response = await fetch("http://localhost:3000/", {
         method: "POST",
         headers: {
