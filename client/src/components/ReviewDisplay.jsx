@@ -23,6 +23,10 @@ function ReviewDisplay({ reviews }) {
           <p>Rating: {review.rating}</p>
           <p>Type: {review.type}</p>
         </div>
+        <div className="display-btn">
+          <button className="update-btn">Update</button>
+          <button className="delete-btn">Delete</button>
+        </div>
       </div>
     ))
   );

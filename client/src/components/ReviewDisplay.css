@@ -1,4 +1,5 @@
 .review-display {
+  position: relative;
   display: flex;
   justify-content: flex-start;
   border: 1px solid #ccc;
@@ -11,5 +12,23 @@
 }
 
 .review-info {
-  border: 1px solid #ccc;
+}
+
+.display-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  padding: 5px;
+}
+
+.update-btn {
+  margin: 5px;
+}
+
+.delete-btn {
+  margin: 5px;
+}
+.review-display:hover .display-btn {
+  display: block;
 }
