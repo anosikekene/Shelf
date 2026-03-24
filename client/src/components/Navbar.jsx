@@ -31,14 +31,13 @@ function Navbar() {
             className="navbar-btn"
             onClick={() => {
               logout();
-              navigate("/login");
+              navigate("/");
             }}
-            to="/login"
           >
             Logout
           </button>
         ) : (
-          <button className="navbar-btn" to="/login">
+          <button className="navbar-btn" to="/">
             Login
           </button>
         )}

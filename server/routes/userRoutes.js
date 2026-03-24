@@ -7,7 +7,7 @@ router.get("/profile", auth, userController.profile);
 router.get("/:username", userController.getUserReviews);
 
 router.post("/register", userController.createUser);
-router.post("/login", userController.login);
+router.post("/", userController.login);
 router.post("/:id/favorite", auth, userController.addFavorite);
 router.post("/:username/review", auth, userController.createReview);
 

@@ -14,7 +14,7 @@ function LoginPage() {
     e.preventDefault(); // prevents page from unnecessarily reloading
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch("http://localhost:3000/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

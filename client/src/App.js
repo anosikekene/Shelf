@@ -16,7 +16,7 @@ function App() {
       <Router>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<LoginPage />} />
             <Route
               path="/:username"
               element={
