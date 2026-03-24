@@ -3,6 +3,7 @@ import { button } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import AddReviewPopup from "./AddReviewPopup";
 import "./Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 function addReviewPopup() {
   return (
@@ -14,6 +15,7 @@ function addReviewPopup() {
 function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
   return (
     <nav>
       <div className="navbar">
@@ -25,7 +27,14 @@ function Navbar() {
         </button>
 
         {user ? (
-          <button className="navbar-btn" to="/login" onClick={logout}>
+          <button
+            className="navbar-btn"
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+            to="/login"
+          >
             Logout
           </button>
         ) : (
