@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { button } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import AddReviewPopup from "./AddReviewPopup";
+import "./Navbar.css";
 
 function addReviewPopup() {
   return (
@@ -15,26 +16,38 @@ function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <nav>
-      <Link to="/">Home</Link>
-      <Link to="/profile">Profile</Link>
-
-      {user ? (
-        <Link to="/login" onClick={logout}>
-          Logout
-        </Link>
-      ) : (
-        <Link to="/login">Login</Link>
-      )}
-      {user ? (
-        <button id="add-review-popup" onClick={() => setShowPopup(true)}>
-          Add
+      <div className="navbar">
+        <button className="navbar-btn" to="/">
+          Home
         </button>
-      ) : (
-        <input placeholder="Search"></input>
-      )}
-      {showPopup && (
-        <AddReviewPopup onClose={() => setShowPopup(false)}></AddReviewPopup>
-      )}
+        <button className="navbar-btn" to="/profile">
+          Profile
+        </button>
+
+        {user ? (
+          <button className="navbar-btn" to="/login" onClick={logout}>
+            Logout
+          </button>
+        ) : (
+          <button className="navbar-btn" to="/login">
+            Login
+          </button>
+        )}
+        {user ? (
+          <button
+            className="navbar-btn"
+            id="add-review-popup"
+            onClick={() => setShowPopup(true)}
+          >
+            Add
+          </button>
+        ) : (
+          <input placeholder="Search"></input>
+        )}
+        {showPopup && (
+          <AddReviewPopup onClose={() => setShowPopup(false)}></AddReviewPopup>
+        )}
+      </div>
     </nav>
   );
 }

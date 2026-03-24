@@ -1,0 +1,13 @@
+.navbar {
+  height: 60px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid #ccc;
+}
+
+.navbar-btn {
+  margin: 5px;
+  border: 0px;
+}
