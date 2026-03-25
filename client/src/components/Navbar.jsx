@@ -42,18 +42,24 @@ function Navbar() {
           </button>
         )}
         {user ? (
-          <button
-            className="navbar-btn"
-            id="add-review-popup"
-            onClick={() => setShowPopup(true)}
-          >
+          <button className="navbar-btn" onClick={() => setShowPopup(true)}>
             Add
           </button>
         ) : (
           <input placeholder="Search"></input>
         )}
         {showPopup && (
-          <AddReviewPopup onClose={() => setShowPopup(false)}></AddReviewPopup>
+          <div className="popup-container">
+            <div className="popup-content">
+              <div className="popup-header">
+                <p>Add to your Shelf...</p>
+                <button onClick={() => setShowPopup(false)}>X</button>
+              </div>
+              <div className="popup-info">
+                <input placeholder="Search"></input>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </nav>
