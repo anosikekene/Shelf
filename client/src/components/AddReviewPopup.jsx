@@ -1,8 +1,5 @@
-import { useState } from "react";
 import SearchBar from "./SearchBar";
 function AddReviewPopup({ setShowPopup }) {
-  const [query, setQuery] = useState("");
-
   return (
     <div className="popup-container">
       <div className="popup-content">

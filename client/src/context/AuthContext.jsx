@@ -1,9 +1,9 @@
-import { createContext, use, useState } from "react";
+import { createContext, useState } from "react";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(localStorage.getItem("user"));
-
+  const token = useState(localStorage.getItem("token"));
   const login = (userData, token) => {
     localStorage.setItem("user", userData);
     localStorage.setItem("token", token);
@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, token }}>
       {children}
     </AuthContext.Provider>
   );
