@@ -1,21 +1,19 @@
 import { useContext, useState } from "react";
-import { button } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import AddReviewPopup from "./AddReviewPopup";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
+import AddReviewPopup from "./AddReviewPopup";
 
-function addReviewPopup() {
-  return (
-    <div>
-      <h1>Hello</h1>
-    </div>
-  );
-}
 function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      console.log("Hellos");
+    }
+  };
   return (
     <nav>
       <div className="navbar">
@@ -48,19 +46,7 @@ function Navbar() {
         ) : (
           <input placeholder="Search"></input>
         )}
-        {showPopup && (
-          <div className="popup-container">
-            <div className="popup-content">
-              <div className="popup-header">
-                <p>Add to your Shelf...</p>
-                <button onClick={() => setShowPopup(false)}>X</button>
-              </div>
-              <div className="popup-info">
-                <input placeholder="Search"></input>
-              </div>
-            </div>
-          </div>
-        )}
+        {showPopup && <AddReviewPopup setShowPopup={setShowPopup} />}
       </div>
     </nav>
   );
