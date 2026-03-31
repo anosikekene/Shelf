@@ -1,0 +1,8 @@
+.popup-info input {
+  width: 100%;
+  font-size: medium;
+  box-sizing: border-box;
+}
+.review-inputs {
+  z-index: 1500;
+}

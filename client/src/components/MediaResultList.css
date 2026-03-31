@@ -1,0 +1,8 @@
+.result-row {
+  border: 1px solid white;
+}
+
+.result-row:hover {
+  background-color: azure;
+  cursor: pointer;
+}

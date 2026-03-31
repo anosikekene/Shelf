@@ -9,11 +9,6 @@ function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      console.log("Hellos");
-    }
-  };
   return (
     <nav>
       <div className="navbar">
