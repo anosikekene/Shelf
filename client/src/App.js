@@ -9,26 +9,29 @@ import Navbar from "./components/Navbar";
 import Layout from "./Layout";
 import "./global.css";
 import { AuthProvider } from "./context/AuthContext";
+import { DashboardProvider } from "./context/DashboardContext";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<LoginPage />} />
-            <Route
-              path="/:username"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/register" element={<Register />} />
-          </Route>
-        </Routes>
-      </Router>
+      <DashboardProvider>
+        <Router>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<LoginPage />} />
+              <Route
+                path="/:username"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/register" element={<Register />} />
+            </Route>
+          </Routes>
+        </Router>
+      </DashboardProvider>
     </AuthProvider>
   );
 }
