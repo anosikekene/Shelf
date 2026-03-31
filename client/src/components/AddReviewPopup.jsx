@@ -3,7 +3,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../context/DashboardContext";
 
-function AddToShelf({ setIsPopupVisible, selectedItem, triggerRefresh }) {
+function AddToShelf({
+  setIsPopupVisible,
+  selectedItem,
+  triggerRefresh,
+  setShowPopup,
+}) {
   const [rating, setRating] = useState("");
   const navigate = useNavigate();
   const [user] = useState(localStorage.getItem("user"));
@@ -29,6 +34,7 @@ function AddToShelf({ setIsPopupVisible, selectedItem, triggerRefresh }) {
         }),
       });
       if (response.ok) {
+        setShowPopup(false);
         setIsPopupVisible(false);
         triggerRefresh();
         navigate(`/${user}`);
@@ -102,7 +108,7 @@ function MediaResultList({ data, onselect }) {
   ));
 }
 
-function SearchBar({ triggerRefresh }) {
+function SearchBar({ triggerRefresh, setShowPopup }) {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -164,6 +170,7 @@ function SearchBar({ triggerRefresh }) {
             setIsPopupVisible={setIsPopupVisible}
             selectedItem={selectedItem}
             triggerRefresh={triggerRefresh}
+            setShowPopup={setShowPopup}
           ></AddToShelf>
         )}
       </div>
@@ -180,7 +187,10 @@ function AddReviewPopup({ setShowPopup }) {
           <p>Add to your Shelf...</p>
           {<button onClick={() => setShowPopup(false)}>X</button>}
         </div>
-        <SearchBar triggerRefresh={triggerRefresh}></SearchBar>
+        <SearchBar
+          triggerRefresh={triggerRefresh}
+          setShowPopup={setShowPopup}
+        ></SearchBar>
       </div>
     </div>
   );
