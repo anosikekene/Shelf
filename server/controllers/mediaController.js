@@ -1,5 +1,5 @@
 const tmdb = require("../utils/tmdbClient");
-
+const rawg = require("../utils/rawgClient");
 //const Media = require("../models/Media");
 const Review = require("../models/Review");
 
@@ -15,22 +15,29 @@ exports.getAllMedia = async (req, res) => {
 //http://localhost:3000/media/search?title=
 exports.searchMedia = async (req, res) => {
   const { title } = req.query;
-  console.log(title);
+  console.log(req.baseUrl, title);
   if (!title) return res.status(400).json({ error: "Title is required" });
 
   try {
-    const results = await tmdb.search(title);
+    let results;
+    switch (req.baseUrl) {
+      case "/media":
+        results = await tmdb.search(title);
+        break;
+      case "/games":
+        results = await rawg.search(title);
+        break;
+    }
 
     const simplified = results.slice(0, 5).map((item) => ({
       id: item.id,
       title: item.title || item.name,
-      type: item.media_type,
-      releaseDate: item.release_date || item.first_air_date,
-      overview: item.overview,
-      averageRating: item.vote_average,
+      type: req.baseUrl === "/games" ? "game" : item.media_type,
+      releaseDate: item.release_date || item.first_air_date || item.released,
+      averageRating: item.vote_average || item.rating,
       poster: item.poster_path
         ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-        : null,
+        : item.background_image,
     }));
 
     res.json(simplified);

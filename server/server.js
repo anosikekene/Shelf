@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/media", mediaRoutes);
+app.use("/games", mediaRoutes);
 app.use("", userRoutes);
 
 app.use((err, req, res, next) => {
