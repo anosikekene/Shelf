@@ -9,11 +9,11 @@ function AddToShelf({
   triggerRefresh,
   setShowPopup,
 }) {
-  const [rating, setRating] = useState("");
+  const [rating, setRating] = useState(selectedItem?.rating || "");
+  const [comment, setComment] = useState(selectedItem?.comment || "");
   const navigate = useNavigate();
   const [user] = useState(localStorage.getItem("user"));
   const [token] = useState(localStorage.getItem("token"));
-  const [comment, setComment] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -179,18 +179,38 @@ function SearchBar({ triggerRefresh, setShowPopup }) {
 }
 
 function AddReviewPopup({ setShowPopup }) {
-  const { triggerRefresh } = useDashboard();
+  const handleClose = () => {
+    setIsPopupVisible(false);
+    setSelectedReview(null);
+  };
+  const {
+    triggerRefresh,
+    setIsPopupVisible,
+    selectedReview,
+    setSelectedReview,
+  } = useDashboard();
   return (
     <div className="popup-container">
       <div className="popup-content">
         <div className="popup-header">
-          <p>Add to your Shelf...</p>
-          {<button onClick={() => setShowPopup(false)}>X</button>}
+          <p>
+            {selectedReview ? "Update your review..." : "Add to your Shelf..."}
+          </p>
+          <button onClick={handleClose}>X</button>
         </div>
-        <SearchBar
-          triggerRefresh={triggerRefresh}
-          setShowPopup={setShowPopup}
-        ></SearchBar>
+        {selectedReview ? (
+          <AddToShelf
+            setIsPopupVisible={handleClose}
+            selectedItem={selectedReview}
+            triggerRefresh={triggerRefresh}
+            setShowPopup={handleClose}
+          />
+        ) : (
+          <SearchBar
+            triggerRefresh={triggerRefresh}
+            setShowPopup={setIsPopupVisible}
+          />
+        )}
       </div>
     </div>
   );

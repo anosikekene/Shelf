@@ -1,7 +1,7 @@
 import "./ReviewDisplay.css";
 import { useState } from "react";
 import { useDashboard } from "../context/DashboardContext";
-
+import { AddToShelf } from "./AddReviewPopup";
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
@@ -13,7 +13,8 @@ const formatDate = (date) => {
 function ReviewDisplay({ reviews }) {
   const [user] = useState(localStorage.getItem("user"));
   const [token] = useState(localStorage.getItem("token"));
-  const { triggerRefresh } = useDashboard();
+  const { triggerRefresh, setIsPopupVisible, setSelectedReview } =
+    useDashboard();
 
   async function deleteButton(review) {
     try {
@@ -38,6 +39,31 @@ function ReviewDisplay({ reviews }) {
     }
   }
 
+  async function updateButton(review) {
+    try {
+      // const response = await fetch(
+      //   `http://localhost:3000/${user}/review/${review.id}`,
+      //   {
+      //     method: "DELETE",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   },
+      // );
+      // if (response.ok) {
+      //   console.log("Deleted");
+      //   triggerRefresh();
+      // } else {
+      //   alert("Delete Failed!");
+      // }
+      //AddToShelf(true, review, triggerRefresh, true);
+      console.log("update");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return !reviews || reviews.length === 0 ? (
     <p>No reviews yet</p>
   ) : (
@@ -54,7 +80,15 @@ function ReviewDisplay({ reviews }) {
           <p>Type: {review.type}</p>
         </div>
         <div className="display-btn">
-          <button className="update-btn">Update</button>
+          <button
+            className="update-btn"
+            onClick={() => {
+              setIsPopupVisible(true);
+              setSelectedReview(review);
+            }}
+          >
+            Update
+          </button>
           <button className="delete-btn" onClick={() => deleteButton(review)}>
             Delete
           </button>
