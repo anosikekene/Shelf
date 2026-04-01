@@ -171,11 +171,9 @@ exports.addFavorite = async (req, res) => {
 //http://localhost:3000/api/users/keneanosike/review/80020
 exports.deleteReview = async (req, res) => {
   try {
-    const { mediaId } = req.params;
-    console.log(req.userId);
     const review = await Review.findOneAndDelete({
-      user: req.userId,
-      id: mediaId,
+      user: req.user._id,
+      id: req.params.mediaId,
     });
 
     if (!review) return res.status(404).json({ error: "Review not found" });

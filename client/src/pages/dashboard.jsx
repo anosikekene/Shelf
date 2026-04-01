@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReviewDisplay from "../components/ReviewDisplay";
-import { useDashboard, DashboardProvider } from "../context/DashboardContext";
+import { useDashboard } from "../context/DashboardContext";
 
 function Dashboard() {
   return <DashboardContent />;

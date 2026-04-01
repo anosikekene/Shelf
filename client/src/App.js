@@ -5,7 +5,6 @@ import LoginPage from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Navbar from "./components/Navbar";
 import Layout from "./Layout";
 import "./global.css";
 import { AuthProvider } from "./context/AuthContext";

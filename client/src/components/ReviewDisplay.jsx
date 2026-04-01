@@ -1,4 +1,6 @@
 import "./ReviewDisplay.css";
+import { useState } from "react";
+import { useDashboard } from "../context/DashboardContext";
 
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString("en-US", {
@@ -7,7 +9,35 @@ const formatDate = (date) => {
     day: "numeric",
   });
 };
+
 function ReviewDisplay({ reviews }) {
+  const [user] = useState(localStorage.getItem("user"));
+  const [token] = useState(localStorage.getItem("token"));
+  const { triggerRefresh } = useDashboard();
+
+  async function deleteButton(review) {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/${user}/review/${review.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.ok) {
+        console.log("Deleted");
+        triggerRefresh();
+      } else {
+        alert("Delete Failed!");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return !reviews || reviews.length === 0 ? (
     <p>No reviews yet</p>
   ) : (
@@ -25,7 +55,9 @@ function ReviewDisplay({ reviews }) {
         </div>
         <div className="display-btn">
           <button className="update-btn">Update</button>
-          <button className="delete-btn">Delete</button>
+          <button className="delete-btn" onClick={() => deleteButton(review)}>
+            Delete
+          </button>
         </div>
       </div>
     ))
