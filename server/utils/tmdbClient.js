@@ -8,7 +8,7 @@ exports.search = async (query) => {
     params: {
       api_key: TMDB_API_KEY,
       query,
-      include_adult: false,
+      include_adult: true,
     },
   });
 

@@ -7,7 +7,7 @@ const reviewSchema = new mongoose.Schema({
     required: true,
   },
   id: {
-    type: Number,
+    type: mongoose.Schema.Types.Mixed,
     required: true,
   },
   title: { type: String, required: true },
