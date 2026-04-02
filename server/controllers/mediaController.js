@@ -1,5 +1,5 @@
 const tmdb = require("../utils/tmdbClient");
-const rawg = require("../utils/rawgClient");
+const gb = require("../utils/gbClient");
 const books = require("../utils/googleBooksClient");
 //const Media = require("../models/Media");
 const Review = require("../models/Review");
@@ -26,7 +26,7 @@ exports.searchMedia = async (req, res) => {
         results = await tmdb.search(title);
         break;
       case "/games":
-        results = await rawg.search(title);
+        results = await gb.search(title);
         break;
       case "/books":
         results = await books.search(title);
@@ -43,16 +43,16 @@ exports.searchMedia = async (req, res) => {
       releaseDate:
         item.release_date ||
         item.first_air_date ||
-        item.released ||
+        String(item.year) ||
         item.volumeInfo?.publishedDate,
       averageRating:
         item.vote_average ||
-        item.rating ||
+        item.rating?.mean * 10 ||
         item.volumeInfo?.averageRating ||
         null,
       poster: item.poster_path
         ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-        : item.background_image || item.volumeInfo?.imageLinks?.smallThumbnail,
+        : item.image || item.volumeInfo?.imageLinks?.smallThumbnail,
     }));
 
     res.json(simplified);

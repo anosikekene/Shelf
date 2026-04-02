@@ -6,9 +6,9 @@
 }
 
 .poster img {
-  height: 120px;
-  width: auto;
-  padding: 20px;
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
 }
 
 .review-info {
