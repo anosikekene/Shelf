@@ -108,7 +108,7 @@ function MediaResultList({ data, onselect }) {
   ));
 }
 
-function SearchBar({ triggerRefresh, setShowPopup }) {
+function SearchBar({ triggerRefresh, setShowPopup, type }) {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -129,7 +129,7 @@ function SearchBar({ triggerRefresh, setShowPopup }) {
   const debounceSearch = async (searchInput) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/media/search?title=${searchInput}`,
+        `http://localhost:3000/${type}/search?title=${searchInput}`,
         {
           method: "GET",
           headers: {
@@ -189,13 +189,12 @@ function AddReviewPopup({ setShowPopup }) {
     selectedReview,
     setSelectedReview,
   } = useDashboard();
+  const [type, setType] = useState("tvMovies");
   return (
     <div className="popup-container">
       <div className="popup-content">
         <div className="popup-header">
-          <p>
-            {selectedReview ? "Update your review..." : "Add to your Shelf..."}
-          </p>
+          <p>Add to your Shelf...</p>
           <button onClick={handleClose}>X</button>
         </div>
         {selectedReview ? (
@@ -206,10 +205,16 @@ function AddReviewPopup({ setShowPopup }) {
             setShowPopup={handleClose}
           />
         ) : (
-          <SearchBar
-            triggerRefresh={triggerRefresh}
-            setShowPopup={setIsPopupVisible}
-          />
+          <div className="media-btn">
+            <button onClick={() => setType("media")}>Movies/TV</button>
+            <button onClick={() => setType("games")}>Video Games</button>
+            <button onClick={() => setType("books")}>Books</button>
+            <SearchBar
+              type={type}
+              triggerRefresh={triggerRefresh}
+              setShowPopup={setIsPopupVisible}
+            />
+          </div>
         )}
       </div>
     </div>

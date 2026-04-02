@@ -32,6 +32,7 @@ function ReviewDisplay({ reviews }) {
         console.log("Deleted");
         triggerRefresh();
       } else {
+        console.log(response);
         alert("Delete Failed!");
       }
     } catch (err) {
