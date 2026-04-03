@@ -30,8 +30,8 @@ function DashboardContent() {
         },
         body: JSON.stringify({ targetId: profileUser._id }),
       });
-      fetchUser(); // refresh logged-in user
-      triggerRefresh(); // refresh profile page (followers count)
+      fetchUser();
+      triggerRefresh();
     } catch (err) {
       console.error(err);
     }
@@ -50,8 +50,8 @@ function DashboardContent() {
         body: JSON.stringify({ targetId: profileUser._id }),
       });
 
-      fetchUser(); // refresh logged-in user
-      triggerRefresh(); // refresh profile page
+      fetchUser();
+      triggerRefresh();
     } catch (err) {
       console.error(err);
     }

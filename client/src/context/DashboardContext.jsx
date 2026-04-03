@@ -25,7 +25,7 @@ export function DashboardProvider({ children }) {
   };
 
   useEffect(() => {
-    fetchUser(); // run once on load
+    fetchUser();
   }, []);
 
   return (

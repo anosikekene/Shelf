@@ -200,7 +200,6 @@ exports.deleteReview = async (req, res) => {
 
 exports.followUser = async (req, res) => {
   try {
-    console.log("userId, targetId", req.user._id, req.body);
     const userId = req.user._id;
     const { targetId } = req.body;
     if (userId.toString() === targetId) {
