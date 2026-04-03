@@ -16,7 +16,6 @@ exports.getAllMedia = async (req, res) => {
 //http://localhost:3000/media/search?title=
 exports.searchMedia = async (req, res) => {
   const { title } = req.query;
-  console.log(req.baseUrl, title);
   if (!title) return res.status(400).json({ error: "Title is required" });
 
   try {
@@ -32,7 +31,6 @@ exports.searchMedia = async (req, res) => {
         results = await books.search(title);
         break;
     }
-    console.log(results);
     const simplified = results.slice(0, 5).map((item) => ({
       id: item.id,
       title: item.title || item.name || item.volumeInfo?.title,
