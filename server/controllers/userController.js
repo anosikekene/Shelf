@@ -109,6 +109,7 @@ exports.getUserInfo = async (req, res) => {
       reviews,
       followers: user.followers,
       following: user.following,
+      watchlist: user.watchlist,
     });
   } catch (err) {
     console.error(err);
@@ -329,5 +330,42 @@ exports.deleteComment = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Error deleting comment" });
+  }
+};
+
+exports.getWatchlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    res.json(user.watchlist);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.addToWatchlist = async (req, res) => {
+  try {
+    const { mediaId, title, type, poster } = req.body;
+    console.log(req.user);
+    const user = await User.findById(req.user._id);
+    if (!user.watchlist.some((item) => item.mediaId === mediaId)) {
+      user.watchlist.push({ mediaId, title, type, poster });
+      await user.save();
+    }
+    res.json(user.watchlist);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.deleteWatchlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    user.watchlist = user.watchlist.filter(
+      (item) => item.mediaId !== req.params.mediaId,
+    );
+    await user.save();
+    res.json(user.watchlist);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 };

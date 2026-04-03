@@ -10,6 +10,7 @@ import "./global.css";
 import { AuthProvider } from "./context/AuthContext";
 import { DashboardProvider } from "./context/DashboardContext";
 import Feed from "./components/Feed";
+import Watchlist from "./pages/Watchlist";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                 }
               />
             </Route>
+            <Route path="/:username/watchlist" element={<Watchlist />} />
           </Routes>
         </Router>
       </DashboardProvider>
