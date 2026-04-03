@@ -5,11 +5,11 @@ const userController = require("../controllers/userController");
 
 router.get("/profile", auth, userController.profile);
 router.get("/feed", auth, userController.getFeed);
-router.get("/unfollow", auth, userController.unfollowUser);
-router.get("/follow", auth, userController.followUser);
-router.get("/:username", userController.getUserReviews);
+router.get("/:username", userController.getUserInfo);
 
 router.post("/register", userController.createUser);
+router.post("/:username/unfollow", auth, userController.unfollowUser);
+router.post("/:username/follow", auth, userController.followUser);
 router.post("/", userController.login);
 router.post("/:id/favorite", auth, userController.addFavorite);
 router.post("/:username/review", auth, userController.createReview);

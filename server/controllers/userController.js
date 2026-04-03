@@ -89,20 +89,26 @@ exports.profile = async (req, res) => {
 };
 
 //http://localhost:3000/api/users/keneanosike/reviews
-exports.getUserReviews = async (req, res) => {
+exports.getUserInfo = async (req, res) => {
   try {
     const { username } = req.params;
 
-    const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ error: "User not found2" });
+    const user = await User.findOne({ username })
+      .populate("followers", "username _id")
+      .populate("following", "username _id");
+
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     const reviews = await Review.find({ user: user._id }).sort({
       createdAt: -1,
     });
 
     res.json({
+      _id: user._id,
       username: user.username,
       reviews,
+      followers: user.followers,
+      following: user.following,
     });
   } catch (err) {
     console.error(err);
@@ -194,6 +200,7 @@ exports.deleteReview = async (req, res) => {
 
 exports.followUser = async (req, res) => {
   try {
+    console.log("userId, targetId", req.user._id, req.body);
     const userId = req.user._id;
     const { targetId } = req.body;
     if (userId.toString() === targetId) {

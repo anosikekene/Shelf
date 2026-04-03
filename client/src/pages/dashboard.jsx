@@ -12,14 +12,61 @@ function DashboardContent() {
   const { username } = useParams();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { refreshTrigger } = useDashboard();
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [profileUser, setProfileUser] = useState(null);
+  const { refreshTrigger, currentUser, fetchUser, triggerRefresh } =
+    useDashboard();
+
+  const handleFollow = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await fetch(`http://localhost:3000/${profileUser.username}/follow`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ targetId: profileUser._id }),
+      });
+      fetchUser(); // refresh logged-in user
+      triggerRefresh(); // refresh profile page (followers count)
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUnfollow = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await fetch(`http://localhost:3000/${profileUser.username}/unfollow`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ targetId: profileUser._id }),
+      });
+
+      fetchUser(); // refresh logged-in user
+      triggerRefresh(); // refresh profile page
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchProfile = async () => {
       try {
         const response = await fetch(`http://localhost:3000/${username}`);
         const data = await response.json();
-        setReviews(data.reviews);
+
+        setProfileUser(data);
+        setReviews(data.reviews || []);
+        setFollowers(data.followers || []);
+        setFollowing(data.following || []);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -27,10 +74,16 @@ function DashboardContent() {
       }
     };
 
-    fetchUser();
+    fetchProfile();
   }, [username, refreshTrigger]);
 
   if (loading) return <p>Loading...</p>;
+  const isCurrentUser =
+    currentUser?._id?.toString() === profileUser?._id?.toString();
+
+  const isFollowing = currentUser?.following?.some(
+    (f) => f === profileUser?._id || f._id === profileUser?._id,
+  );
 
   return (
     <div>
@@ -38,6 +91,15 @@ function DashboardContent() {
         <div>
           <h1>Dashboard</h1>
           <h2>{username}</h2>
+          <div className="profile-actions">
+            {isCurrentUser ? (
+              <button>Edit Profile</button>
+            ) : isFollowing ? (
+              <button onClick={handleUnfollow}>Unfollow</button>
+            ) : (
+              <button onClick={handleFollow}>Follow</button>
+            )}
+          </div>
           <h4>Recents</h4>
         </div>
         <div className="profile-stats">
@@ -46,13 +108,11 @@ function DashboardContent() {
             <h4>Shelved</h4>
           </div>
           <div>
-            <h5>X</h5>
-
+            <h5>{followers.length}</h5>
             <h4>Followers</h4>
           </div>
           <div>
-            <h5>X</h5>
-
+            <h5>{following.length}</h5>
             <h4>Following</h4>
           </div>
         </div>
