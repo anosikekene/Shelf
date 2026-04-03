@@ -13,8 +13,17 @@ const formatDate = (date) => {
 function ReviewDisplay({ reviews, editable = false }) {
   const [user] = useState(localStorage.getItem("user"));
   const [token] = useState(localStorage.getItem("token"));
-  const { triggerRefresh, setIsPopupVisible, setSelectedReview } =
-    useDashboard();
+  const {
+    triggerRefresh,
+    setIsPopupVisible,
+    setSelectedReview,
+    selectedReview,
+  } = useDashboard();
+
+  const [likes, setLikes] = useState(selectedReview?.likes.length);
+  const [likesMap, setLikesMap] = useState(() =>
+    Object.fromEntries(reviews.map((r) => [r._id, r.likes?.length ?? 0])),
+  );
 
   async function deleteButton(review) {
     try {
@@ -65,6 +74,19 @@ function ReviewDisplay({ reviews, editable = false }) {
     }
   }
 
+  const handleLike = async (review) => {
+    const res = await fetch(`http://localhost:3000/${review?._id}/like`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    //setLikes(data.likes);
+    setLikesMap((prev) => ({
+      ...prev,
+      [review._id]: Array.isArray(data.likes) ? data.likes.length : data.likes,
+    }));
+  };
+
   return !reviews || reviews.length === 0 ? (
     <p>No reviews yet</p>
   ) : (
@@ -80,7 +102,8 @@ function ReviewDisplay({ reviews, editable = false }) {
           <p>Rating: {review.rating}</p>
           <p>Type: {review.type}</p>
         </div>
-        {editable && (
+
+        {editable ? (
           <div className="display-btn">
             <button
               className="update-btn"
@@ -95,6 +118,18 @@ function ReviewDisplay({ reviews, editable = false }) {
               Delete
             </button>
           </div>
+        ) : (
+          // <button
+          //   onClick={() => {
+          //     setSelectedReview(review);
+          //     handleLike();
+          //   }}
+          // >
+          //   ❤️ {likes}
+          // </button>
+          <button onClick={() => handleLike(review)}>
+            ❤️ {likesMap[review._id]}
+          </button>
         )}
       </div>
     ))

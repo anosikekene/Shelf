@@ -7,6 +7,7 @@ function Feed() {
   const [loading, setLoading] = useState(true);
   const [token] = useState(localStorage.getItem("token"));
   const { refreshTrigger } = useDashboard();
+
   useEffect(() => {
     const fetchFeed = async () => {
       try {

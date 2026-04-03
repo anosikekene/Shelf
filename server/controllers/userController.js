@@ -250,7 +250,6 @@ exports.getFeed = async (req, res) => {
   try {
     const userId = req.user._id;
     const user = await User.findById(userId);
-    console.log(user, userId);
 
     if (!user) return res.status(404).json({ error: "User not found4" });
 
@@ -263,5 +262,23 @@ exports.getFeed = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.toggleLike = async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.id);
+    const userId = req.user._id;
+
+    if (!review.likes.includes(userId)) {
+      review.likes.push(userId);
+    } else {
+      review.likes = review.likes.filter((id) => !id.equals(userId));
+    }
+    await review.save();
+    res.json({ likes: review.likes.length });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "ToggleLike error" });
   }
 };
