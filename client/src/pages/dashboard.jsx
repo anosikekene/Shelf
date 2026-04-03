@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReviewDisplay from "../components/ReviewDisplay";
 import { useDashboard } from "../context/DashboardContext";
+import "./Dashboard.css";
 
 function Dashboard() {
   return <DashboardContent />;
@@ -29,18 +30,37 @@ function DashboardContent() {
     fetchUser();
   }, [username, refreshTrigger]);
 
+  console.log(reviews);
   if (loading) return <p>Loading...</p>;
 
   return (
     <div>
-      <div>
-        <h1>Dashboard</h1>
+      <div className="dashboard-info">
+        <div>
+          <h1>Dashboard</h1>
+          <h2>{username}</h2>
+          <h4>Recents</h4>
+        </div>
+        <div className="profile-stats">
+          <div>
+            <h5>{reviews.length}</h5>
+            <h4>Shelved</h4>
+          </div>
+          <div>
+            <h5>X</h5>
+
+            <h4>Followers</h4>
+          </div>
+          <div>
+            <h5>X</h5>
+
+            <h4>Following</h4>
+          </div>
+        </div>
       </div>
-      <h2>{username}</h2>
       <div>
-        <h4>Recents</h4>
+        <ReviewDisplay reviews={reviews} />
       </div>
-      <ReviewDisplay reviews={reviews} />
     </div>
   );
 }

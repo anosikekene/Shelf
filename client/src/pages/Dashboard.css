@@ -1,0 +1,17 @@
+.dashboard-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-stats div {
+  padding: 10px;
+}
+
+.profile-stats h5 {
+  text-align: center;
+}
