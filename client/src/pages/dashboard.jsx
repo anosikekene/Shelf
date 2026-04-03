@@ -30,7 +30,6 @@ function DashboardContent() {
     fetchUser();
   }, [username, refreshTrigger]);
 
-  console.log(reviews);
   if (loading) return <p>Loading...</p>;
 
   return (

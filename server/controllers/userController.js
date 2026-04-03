@@ -75,7 +75,7 @@ exports.profile = async (req, res) => {
   try {
     const user = await User.findById(req.userId).select("-password");
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found1" });
     }
     res.json({
       username: user.username,
@@ -94,7 +94,7 @@ exports.getUserReviews = async (req, res) => {
     const { username } = req.params;
 
     const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) return res.status(404).json({ error: "User not found2" });
 
     const reviews = await Review.find({ user: user._id }).sort({
       createdAt: -1,
@@ -115,7 +115,7 @@ exports.createReview = async (req, res) => {
   try {
     const { id, rating, comment, title, type, poster } = req.body;
     const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) return res.status(404).json({ error: "User not found3" });
 
     if (!id || rating == null || !type) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -141,6 +141,8 @@ exports.createReview = async (req, res) => {
       poster,
     });
     await review.save();
+    user.reviews.push(review._id);
+    await user.save();
 
     res.status(201).json({
       message: "Review added successfully",
@@ -186,6 +188,75 @@ exports.deleteReview = async (req, res) => {
     res.json({ message: "Review deleted" });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.followUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { targetId } = req.body;
+    if (userId.toString() === targetId) {
+      return res.status(400).json({ error: "You can't follow yourself" });
+    }
+
+    await Promise.all([
+      User.findByIdAndUpdate(userId, { $addToSet: { following: targetId } }),
+      User.findByIdAndUpdate(targetId, { $addToSet: { followers: userId } }),
+    ]);
+
+    const targetUser = await User.findById(targetId);
+
+    res
+      .status(200)
+      .json({ message: `You are now following ${targetUser.username}` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.unfollowUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { targetId } = req.body;
+
+    if (userId.toString() === targetId) {
+      return res.status(400).json({ error: "You cannot unfollow yourself" });
+    }
+
+    await Promise.all([
+      User.findByIdAndUpdate(userId, { $pull: { following: targetId } }),
+      User.findByIdAndUpdate(targetId, { $pull: { followers: userId } }),
+    ]);
+
+    const targetUser = await User.findById(targetId);
+
+    res.status(200).json({
+      message: `You have unfollowed ${targetUser.username}`,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.getFeed = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    console.log(user, userId);
+
+    if (!user) return res.status(404).json({ error: "User not found4" });
+
+    const feedReviews = await Review.find({ user: { $in: user.following } })
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .populate("user", "username");
+
+    res.status(200).json({ feed: feedReviews });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };

@@ -9,6 +9,7 @@ import Layout from "./Layout";
 import "./global.css";
 import { AuthProvider } from "./context/AuthContext";
 import { DashboardProvider } from "./context/DashboardContext";
+import Feed from "./components/Feed";
 
 function App() {
   return (
@@ -27,6 +28,14 @@ function App() {
                 }
               />
               <Route path="/register" element={<Register />} />
+              <Route
+                path="/feed"
+                element={
+                  <ProtectedRoute>
+                    <Feed />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
           </Routes>
         </Router>
