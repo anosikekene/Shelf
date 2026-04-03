@@ -36,6 +36,9 @@ function Feed() {
       {feed.length === 0 && <p>No reviews from followed accounts yet.</p>}
       {feed.map((review) => (
         <div key={review._id} className="review-card">
+          <div className="poster">
+            <img src={review.poster} alt={review?.title + "poster"} />
+          </div>
           <h3>{review.title}</h3>
           <p>By: {review.user.username}</p>
           <p>Rating: {review.rating}</p>
