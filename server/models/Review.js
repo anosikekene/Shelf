@@ -17,6 +17,14 @@ const reviewSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   poster: { type: String },
   likes: [mongoose.Schema.Types.ObjectId],
+  comments: [
+    {
+      userId: mongoose.Schema.Types.ObjectId,
+      username: String,
+      text: String,
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 reviewSchema.index({ user: 1, id: 1 }, { unique: true });

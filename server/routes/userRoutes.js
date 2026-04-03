@@ -14,6 +14,9 @@ router.post("/", userController.login);
 router.post("/:id/favorite", auth, userController.addFavorite);
 router.post("/:username/review", auth, userController.createReview);
 router.post("/:id/like", auth, userController.toggleLike);
+router.post("/:id/comment", auth, userController.addComment);
+
+router.delete("/:id/comment/:commentId", auth, userController.deleteComment);
 router.delete("/:username/review/:mediaId", auth, userController.deleteReview);
 
 module.exports = router;

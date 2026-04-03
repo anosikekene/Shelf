@@ -282,3 +282,52 @@ exports.toggleLike = async (req, res) => {
     res.status(500).json({ error: "ToggleLike error" });
   }
 };
+
+exports.addComment = async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.id);
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    const newComment = {
+      userId: req.user._id,
+      username: req.user.username,
+      text: req.body.text,
+    };
+
+    review.comments.push(newComment);
+    const savedReview = await review.save();
+
+    const addedComment = savedReview.comments[savedReview.comments.length - 1];
+
+    res.json(addedComment);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error adding comment" });
+  }
+};
+
+exports.deleteComment = async (req, res) => {
+  try {
+    const { id, commentId } = req.params;
+
+    const review = await Review.findById(id);
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    review.comments = review.comments.filter(
+      (c) => c._id.toString() !== commentId,
+    );
+
+    await review.save();
+
+    res.json({ message: "Comment deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error deleting comment" });
+  }
+};

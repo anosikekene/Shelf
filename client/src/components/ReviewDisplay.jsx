@@ -18,12 +18,17 @@ function ReviewDisplay({ reviews, editable = false }) {
     setIsPopupVisible,
     setSelectedReview,
     selectedReview,
+    currentUser,
   } = useDashboard();
 
-  const [likes, setLikes] = useState(selectedReview?.likes.length);
   const [likesMap, setLikesMap] = useState(() =>
     Object.fromEntries(reviews.map((r) => [r._id, r.likes?.length ?? 0])),
   );
+  const [commentsMap, setCommentsMap] = useState(() =>
+    Object.fromEntries(reviews.map((r) => [r._id, r.comments || []])),
+  );
+
+  const [commentInputs, setCommentInputs] = useState({});
 
   async function deleteButton(review) {
     try {
@@ -87,6 +92,61 @@ function ReviewDisplay({ reviews, editable = false }) {
     }));
   };
 
+  const handleInputChange = (reviewId, value) => {
+    setCommentInputs((prev) => ({
+      ...prev,
+      [reviewId]: value,
+    }));
+  };
+
+  const handleComment = async (review) => {
+    const text = commentInputs[review._id];
+    if (!text || !text.trim()) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/${review._id}/comment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      const newComment = await res.json();
+
+      setCommentsMap((prev) => ({
+        ...prev,
+        [review._id]: [...(prev[review._id] || []), newComment],
+      }));
+
+      setCommentInputs((prev) => ({
+        ...prev,
+        [review._id]: "",
+      }));
+    } catch (err) {
+      console.error("Error adding comment:", err);
+    }
+  };
+
+  const handleDeleteComment = async (reviewId, commentId) => {
+    try {
+      await fetch(`http://localhost:3000/${reviewId}/comment/${commentId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setCommentsMap((prev) => ({
+        ...prev,
+        [reviewId]: prev[reviewId].filter((c) => c._id !== commentId),
+      }));
+    } catch (err) {
+      console.error("Error deleting comment:", err);
+    }
+  };
+
   return !reviews || reviews.length === 0 ? (
     <p>No reviews yet</p>
   ) : (
@@ -101,6 +161,39 @@ function ReviewDisplay({ reviews, editable = false }) {
           <p>{review.comment}</p>
           <p>Rating: {review.rating}</p>
           <p>Type: {review.type}</p>
+          <div className="comments-section">
+            <h4>Comments</h4>
+            {(commentsMap[review._id] || []).length === 0 && (
+              <p>No comments yet</p>
+            )}
+            {(commentsMap[review._id] || []).map((c, index) => (
+              <div key={c._id || index} className="comment">
+                <strong>{c.username || "User"}:</strong> {c.text}
+                {String(c.userId) === String(currentUser?._id) && (
+                  <button
+                    className="delete-comment-btn"
+                    onClick={() => handleDeleteComment(review._id, c._id)}
+                  >
+                    X
+                  </button>
+                )}
+              </div>
+            ))}
+            <form
+              className="comment-input"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleComment(review);
+              }}
+            >
+              <input
+                value={commentInputs[review._id] || ""}
+                onChange={(e) => handleInputChange(review._id, e.target.value)}
+                placeholder="Add a comment..."
+              />
+              <button type="submit">Post</button>
+            </form>
+          </div>
         </div>
 
         {editable ? (
