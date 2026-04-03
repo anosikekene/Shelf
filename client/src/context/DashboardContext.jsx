@@ -5,7 +5,8 @@ const DashboardContext = createContext();
 export function DashboardProvider({ children }) {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [currentUser, setCurrentUser] = useState(null);
-
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
   const triggerRefresh = () => setRefreshTrigger((prev) => prev + 1);
 
   const fetchUser = async () => {
@@ -33,6 +34,10 @@ export function DashboardProvider({ children }) {
       value={{
         refreshTrigger,
         triggerRefresh,
+        isPopupVisible,
+        setIsPopupVisible,
+        selectedReview,
+        setSelectedReview,
         currentUser,
         setCurrentUser,
         fetchUser,
