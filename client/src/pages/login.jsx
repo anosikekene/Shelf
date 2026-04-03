@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-
+import "./Login.css";
 function LoginPage() {
   const [email, setEmail] = useState(""); // creates state, establishes value and setter
   const [password, setPassword] = useState("");
@@ -34,7 +34,7 @@ function LoginPage() {
     }
   };
   return (
-    <div>
+    <div className="login-container">
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <input

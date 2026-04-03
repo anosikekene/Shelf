@@ -1,34 +1,191 @@
 .review-display {
-  position: relative;
   display: flex;
-  justify-content: flex-start;
-  border: 1px solid #ccc;
+  flex-direction: row;
+  gap: 1.5rem;
+  background-color: #1d2d44;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.poster img {
+.review-display:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.review-display .poster img {
   width: 120px;
   height: 180px;
+  border-radius: 8px;
   object-fit: cover;
 }
 
-.review-info {
+.review-display .review-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  color: #f0ebd8;
+}
+
+.review-display .review-info h3 {
+  margin: 0 0 0.3rem 0;
+}
+
+.review-display .review-info p {
+  margin: 0.2rem 0;
+  color: #748cab;
+  font-size: 0.9rem;
+}
+
+.comments-section {
+  margin-top: 0.8rem;
+  border-top: 1px solid #3e5c76;
+  padding-top: 0.5rem;
+}
+
+.comment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0d1321;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.delete-comment-btn {
+  background-color: #228b22;
+  border: none;
+  color: #f0ebd8;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.delete-comment-btn:hover {
+  background-color: #1f7a1f;
+}
+
+.comment-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #3e5c76;
+  background-color: #0d1321;
+  color: #f0ebd8;
+  font-size: 0.9rem;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.comment-input input::placeholder {
+  color: #748cab;
+}
+
+.comment-input input:focus {
+  outline: none;
+  border-color: #228b22;
+  box-shadow: 0 0 6px rgba(34, 139, 34, 0.6);
+}
+
+.comment-input button {
+  background-color: #228b22;
+  color: #f0ebd8;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.comment-input button:hover {
+  background-color: #1f7a1f;
+  transform: translateY(-1px);
 }
 
 .display-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: none;
-  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.update-btn {
-  margin: 5px;
+.display-btn .update-btn,
+.display-btn .delete-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.delete-btn {
-  margin: 5px;
+.display-btn .update-btn {
+  background-color: #228b22;
+  color: #f0ebd8;
 }
-.review-display:hover .display-btn {
-  display: block;
+
+.display-btn .update-btn:hover {
+  background-color: #1f7a1f;
+}
+
+.display-btn .delete-btn {
+  background-color: #b22222;
+  color: #f0ebd8;
+}
+
+.display-btn .delete-btn:hover {
+  background-color: #8b1a1a;
+}
+
+.review-display > button {
+  margin-left: auto;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #228b22;
+  color: #f0ebd8;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.review-display > button:hover {
+  background-color: #1f7a1f;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 800px) {
+  .review-display {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .review-display .poster img {
+    width: 150px;
+    height: 220px;
+  }
+
+  .review-display > button {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
 }

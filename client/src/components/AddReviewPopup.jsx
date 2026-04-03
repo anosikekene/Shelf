@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../context/DashboardContext";
-
+import "./AddReviewPopup.css";
 function AddToShelf({
   setIsPopupVisible,
   selectedItem,
@@ -92,17 +92,11 @@ function AddToShelf({
 }
 
 function MediaResultList({ data, onselect }) {
-  console.log(data);
-
   return data.map((result) => (
-    <div className="result-container">
+    <div key={result.id} className="result-container">
       <div className="result-row" onClick={() => onselect(result)}>
-        <p>
-          {[
-            result.title,
-            result.releaseDate ? ` (${result.releaseDate.slice(0, 4)})` : "",
-          ]}
-        </p>
+        <img className="search-img" src={result.poster} alt={result.title} />
+        <p>{`${result.title}${result.releaseDate ? ` (${result.releaseDate.slice(0, 4)})` : ""}`}</p>
       </div>
     </div>
   ));
@@ -205,10 +199,12 @@ function AddReviewPopup({ setShowPopup }) {
             setShowPopup={handleClose}
           />
         ) : (
-          <div className="media-btn">
-            <button onClick={() => setType("media")}>Movies/TV</button>
-            <button onClick={() => setType("games")}>Video Games</button>
-            <button onClick={() => setType("books")}>Books</button>
+          <div>
+            <div className="media-btn">
+              <button onClick={() => setType("media")}>Movies/TV</button>
+              <button onClick={() => setType("games")}>Video Games</button>
+              <button onClick={() => setType("books")}>Books</button>
+            </div>
             <SearchBar
               type={type}
               triggerRefresh={triggerRefresh}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./Register.css";
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +33,7 @@ function Register() {
     }
   };
   return (
-    <div>
+    <div className="login-container">
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -56,6 +56,10 @@ function Register() {
         />
         <button type="submit">Register</button>
       </form>
+      <p>
+        Already have an account?{" "}
+        <span onClick={() => navigate("/")}>Login</span>
+      </p>
       {message && <p>{message}</p>}
     </div>
   );

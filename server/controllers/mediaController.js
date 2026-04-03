@@ -31,7 +31,7 @@ exports.searchMedia = async (req, res) => {
         results = await books.search(title);
         break;
     }
-    const simplified = results.slice(0, 5).map((item) => ({
+    const simplified = results.slice(0, 8).map((item) => ({
       id: item.id,
       title: item.title || item.name || item.volumeInfo?.title,
       type:

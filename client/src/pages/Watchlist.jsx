@@ -2,7 +2,7 @@ import { useDashboard } from "../context/DashboardContext";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import "./Watchlist.css";
 function Watchlist() {
   const { currentUser } = useDashboard();
   const { username } = useParams();

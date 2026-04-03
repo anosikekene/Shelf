@@ -1,8 +1,24 @@
 .result-row {
-  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  cursor: pointer;
 }
 
+.result-row p {
+  margin: 0;
+  font-size: 14px;
+}
 .result-row:hover {
   background-color: azure;
   cursor: pointer;
+}
+
+.search-img {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 10px;
+  vertical-align: middle;
 }

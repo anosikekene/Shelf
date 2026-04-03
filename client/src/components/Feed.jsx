@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDashboard } from "../context/DashboardContext";
 import ReviewDisplay from "../components/ReviewDisplay";
-
+import "./Feed.css";
 function Feed() {
   const [feed, setFeed] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,18 +35,6 @@ function Feed() {
 
   return (
     <div>
-      {/* {feed.length === 0 && <p>No reviews from followed accounts yet.</p>}
-      {feed.map((review) => (
-        <div key={review._id} className="review-card">
-          <div className="poster">
-            <img src={review.poster} alt={review?.title + "poster"} />
-          </div>
-          <h3>{review.title}</h3>
-          <p>By: {review.user.username}</p>
-          <p>Rating: {review.rating}</p>
-          <p>{review.comment}</p>
-        </div>
-      ))} */}
       <ReviewDisplay reviews={feed} />
     </div>
   );

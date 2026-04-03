@@ -1,17 +1,145 @@
+body,
+.dashboard-info,
+.dashboard-content {
+  font-family: "Inter", sans-serif;
+  background-color: #0d1321;
+  color: #f0ebd8;
+  margin: 0;
+  padding: 0;
+}
+
 .dashboard-info {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #1d2d44;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  margin: 2rem;
+}
+
+.dashboard-info > div:first-child {
+  flex: 1 1 300px;
+  min-width: 250px;
+}
+
+.dashboard-info h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-info h2 {
+  font-size: 1.5rem;
+  color: #748cab;
+  margin-top: 0;
+}
+
+.profile-actions {
+  margin: 1rem 0;
+}
+
+.profile-actions button {
+  background-color: #228b22;
+  color: #f0ebd8;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 0.5rem;
+}
+
+.profile-actions button:hover {
+  background-color: #1f7a1f;
 }
 
 .profile-stats {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.profile-stats div {
-  padding: 10px;
+.profile-stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.profile-stats h4 {
+  font-size: 0.9rem;
+  color: #748cab;
+  margin: 0.2rem 0 0;
 }
 
 .profile-stats h5 {
-  text-align: center;
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.profile-stats button {
+  background-color: #228b22;
+  color: #f0ebd8;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.profile-stats button:hover {
+  background-color: #1f7a1f;
+}
+
+.dashboard-content {
+  margin: 2rem;
+}
+
+.review-card {
+  background-color: #1d2d44;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 900px) {
+  .dashboard-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-stats {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 500px) {
+  .dashboard-info h1 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-info h2 {
+    font-size: 1.2rem;
+  }
+
+  .profile-stats > div {
+    min-width: 60px;
+  }
 }
