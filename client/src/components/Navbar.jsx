@@ -15,10 +15,20 @@ function Navbar() {
   return (
     <nav>
       <div className="navbar">
-        <button className="navbar-btn" to="/">
+        <button
+          className="navbar-btn"
+          onClick={() => {
+            navigate("/feed");
+          }}
+        >
           Home
         </button>
-        <button className="navbar-btn" to="/profile">
+        <button
+          className="navbar-btn"
+          onClick={() => {
+            navigate(`${user}`);
+          }}
+        >
           Profile
         </button>
 

@@ -10,7 +10,7 @@ const formatDate = (date) => {
   });
 };
 
-function ReviewDisplay({ reviews }) {
+function ReviewDisplay({ reviews, editable = false }) {
   const [user] = useState(localStorage.getItem("user"));
   const [token] = useState(localStorage.getItem("token"));
   const { triggerRefresh, setIsPopupVisible, setSelectedReview } =
@@ -80,20 +80,22 @@ function ReviewDisplay({ reviews }) {
           <p>Rating: {review.rating}</p>
           <p>Type: {review.type}</p>
         </div>
-        <div className="display-btn">
-          <button
-            className="update-btn"
-            onClick={() => {
-              setIsPopupVisible(true);
-              setSelectedReview(review);
-            }}
-          >
-            Update
-          </button>
-          <button className="delete-btn" onClick={() => deleteButton(review)}>
-            Delete
-          </button>
-        </div>
+        {editable && (
+          <div className="display-btn">
+            <button
+              className="update-btn"
+              onClick={() => {
+                setIsPopupVisible(true);
+                setSelectedReview(review);
+              }}
+            >
+              Update
+            </button>
+            <button className="delete-btn" onClick={() => deleteButton(review)}>
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     ))
   );

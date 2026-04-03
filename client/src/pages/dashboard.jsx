@@ -118,7 +118,7 @@ function DashboardContent() {
         </div>
       </div>
       <div>
-        <ReviewDisplay reviews={reviews} />
+        <ReviewDisplay reviews={reviews} editable={true} />
       </div>
     </div>
   );
