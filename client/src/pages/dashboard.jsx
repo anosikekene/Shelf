@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReviewDisplay from "../components/ReviewDisplay";
 import { useDashboard } from "../context/DashboardContext";
 import "./Dashboard.css";
@@ -9,12 +9,16 @@ function Dashboard() {
 }
 
 function DashboardContent() {
+  const navigate = useNavigate();
+
   const { username } = useParams();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [profileUser, setProfileUser] = useState(null);
+  const averageRating =
+    reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
   const { refreshTrigger, currentUser, fetchUser, triggerRefresh } =
     useDashboard();
 
@@ -114,6 +118,19 @@ function DashboardContent() {
           <div>
             <h5>{following.length}</h5>
             <h4>Following</h4>
+          </div>
+          <div>
+            <h5>{averageRating}</h5>
+            <h4>Avg. Rating</h4>
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                navigate(`/${username}/watchlist`);
+              }}
+            >
+              Watchlist
+            </button>
           </div>
         </div>
       </div>
