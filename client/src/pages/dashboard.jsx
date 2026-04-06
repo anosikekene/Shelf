@@ -120,7 +120,7 @@ function DashboardContent() {
             <h4>Following</h4>
           </div>
           <div>
-            <h5>{averageRating}</h5>
+            <h5>{averageRating.toFixed(2) || 0}</h5>
             <h4>Avg. Rating</h4>
           </div>
           <div>
