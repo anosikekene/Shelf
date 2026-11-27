@@ -2,7 +2,7 @@
 
 > A full-stack web app for tracking, rating, and reviewing the books, movies, TV shows, and games you love.
 
-**[Live demo](https://your-deployed-link-here)** | [API docs](#api-reference) | [Architecture notes](ARCHITECTURE.md)
+**[Live demo](https://your-deployed-link-here)** | [API docs](#api-reference) |
 
 <!-- Add a screenshot or GIF here. This is the single most useful thing in the README. -->
 ![Shelf screenshot](docs/screenshot.png)
@@ -12,36 +12,35 @@
 <!-- The badge above only works once you add a GitHub Actions workflow named ci.yml. Remove it until then. -->
 
 ## Why I built this
-
-One or two sentences in your own words. Example structure: the problem you wanted to solve (for instance, "I was tracking what I watched and read across several apps"), and what you wanted to learn by building it (for instance, "designing a REST API and authentication from scratch").
+I built this because on my free time I enjoy consuming many different forms of media, and writing down my ratings and leaving comments in my notes app started to get overwhelming. I just wanted to combine my love for media with my interest in computer science. This project gave me the ability to learn many concepts and to deepen my knowledge.
 
 ## Features
-
-- Create an account and log in securely (JWT authentication)
+- Create an account and log in securely
 - Search for books, movies, TV shows, and games
 - Add titles to your personal shelf
 - Rate and review titles
-- [Add or remove items so this list matches what the app really does]
+- Follow users and view their Shelf additions
+- Like and comment on others reviews
+- Create a watchlist
 
 ## Tech stack
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | React, [router/state libraries you use] |
-| Backend | Node.js, Express |
-| Database | MongoDB ([Mongoose / native driver]) |
-| Auth | JSON Web Tokens, [bcrypt for password hashing] |
-| External data | [Name of the catalog API you search, if any] |
-| Testing | [Jest, Supertest, Playwright, once you add them] |
-| Deployment | [Render / Railway / Vercel] |
+| Frontend | React 19, React Router, Create React App |
+| Backend | Node.js, Express 5 |
+| Database | MongoDB with Mongoose |
+| Auth | JSON Web Tokens, bcrypt |
+| External data | TMDB, Google Books, GameBrain |
+| Testing | [N/A] |
+| Deployment | [Coming soon...] |
 
 ## Getting started
 
 ### Prerequisites
 
-- Node.js [version]
+- Node.js 3.1.11
 - A MongoDB database (local, or a free MongoDB Atlas cluster)
-- [API key for the external catalog, if needed]
 
 ### Setup
 
@@ -77,7 +76,6 @@ Copy `server/.env.example` to `server/.env` and set:
 | `MONGODB_URI` | Connection string for your MongoDB database |
 | `JWT_SECRET` | A long random string used to sign tokens |
 | `PORT` | Port for the API server (default: 5000) |
-| `[EXTERNAL_API_KEY]` | [Only if you use an external API] |
 
 Never commit your real `.env` file.
 
@@ -87,13 +85,11 @@ Base URL: `/api` (rewrite these to match your actual routes)
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/auth/register` | No | Create an account |
-| POST | `/auth/login` | No | Log in and receive a JWT |
-| GET | `/titles/search?q=` | Yes | Search for titles |
-| GET | `/shelf` | Yes | Get the current user's shelf |
-| POST | `/shelf` | Yes | Add a title to the shelf |
-| PUT | `/titles/:id/rating` | Yes | Rate a title |
-| POST | `/titles/:id/reviews` | Yes | Add a review |
+| POST | `/register` | No | Create an account |
+| POST | `/` | No | Log in and receive a JWT |
+| GET | `/search` | Yes | Search for titles |
+| GET | `/profile` | Yes | Get the current user's shelf |
+| POST | `/:username/review` | Yes | Add a review to the shelf |
 
 Protected routes expect an `Authorization: Bearer <token>` header.
 
@@ -107,11 +103,11 @@ Shelf/
 │   ├── models/
 │   ├── middleware/  # auth, validation, error handling
 │   └── tests/
+├── .gitignore
+├── README.md
 ├── user_stories.md
 └── task_list.md
 ```
-
-(Adjust this to match your real folders.)
 
 ## Testing
 
@@ -120,15 +116,7 @@ cd server
 npm test
 ```
 
-Describe what is covered (for example: auth flow, search, rating validation, error cases). Delete this section until you have tests, then add the real numbers.
-
-## Design decisions
-
-Short notes on choices you made and why. A few examples of the format:
-
-- **Why MongoDB:** [your reason, and the tradeoff]
-- **How authentication works:** [JWT lifetime, where the token is stored, how routes are protected]
-- **Where the 10,000+ titles come from:** [your own database or an external API, and how search works]
+**UNDER CONSTRUCTION**
 
 ## What I'd improve next
 
@@ -138,10 +126,11 @@ Being honest about limits shows good judgment. Examples:
 - Build a native iOS client in SwiftUI
 - Add rate limiting and stricter input validation
 - Improve accessibility
+- Improve UI
 
 ## What I learned
 
-Two or three sentences about the hardest bug you fixed or the biggest thing you learned, written in your own words.
+The hardest thing I learned with this project was the system design. It was something I wasn't taught so I needed to watch some videos and do some research before I was confident in my design. I learned how to build the backend of an application. This was the most fun part all though frustrating at times. I found joy in learning and making everything as cohesive as possible.
 
 ## Author
 
